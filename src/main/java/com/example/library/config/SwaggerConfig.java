@@ -20,8 +20,8 @@ public class SwaggerConfig {
                         .description("REST API for managing library system")
                         .version("1.0.0")
                         .contact(new Contact()
-                                .name("Your Name")
-                                .email("your.email@example.com"))
+                                .name("Lev")
+                                .email("my.email@example.com"))
                         .license(new License()
                                 .name("Apache 2.0")
                                 .url("http://springdoc.org")));
