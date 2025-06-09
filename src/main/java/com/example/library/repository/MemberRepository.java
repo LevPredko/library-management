@@ -10,5 +10,5 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
 
     Optional<Member> findByName(String name);
     Optional<Member> findByNameIgnoreCase(String name);
-    boolean existsByBorrowedBooksContaining(Book book);
+    boolean existsByBorrows_Book(Book book);
 }
