@@ -22,11 +22,6 @@ public class Member {
 
     private LocalDate membershipDate;
 
-    @ManyToMany
-    @JoinTable(
-            name = "member_books",
-            joinColumns = @JoinColumn(name = "member_id"),
-            inverseJoinColumns = @JoinColumn(name = "book_id")
-    )
-    private Set<Book> borrowedBooks = new HashSet<>();
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<Borrow> borrows = new HashSet<>();
 }

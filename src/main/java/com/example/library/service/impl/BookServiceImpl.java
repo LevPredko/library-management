@@ -5,6 +5,7 @@ import com.example.library.entity.Book;
 import com.example.library.exception.NotFoundException;
 import com.example.library.exception.DeleteConstraintException;
 import com.example.library.repository.BookRepository;
+import com.example.library.repository.BorrowRepository;
 import com.example.library.repository.MemberRepository;
 import com.example.library.service.BookService;
 import com.example.library.validation.BookDTOValidator;
@@ -21,7 +22,7 @@ import java.util.stream.Collectors;
 public class BookServiceImpl implements BookService {
 
     private final BookRepository bookRepository;
-    private final MemberRepository memberRepository;
+    private final BorrowRepository borrowRepository;
     private final BookDTOValidator bookDTOValidator;
 
     private BookDTO mapToDTO(Book book) {
@@ -77,7 +78,7 @@ public class BookServiceImpl implements BookService {
         Book book = bookRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Book with ID " + id + " not found"));
 
-        boolean isBorrowed = memberRepository.existsByBorrowedBooksContaining(book);
+        boolean isBorrowed = borrowRepository.existsByBookIdAndReturnDateIsNull(id);
         if (isBorrowed) {
             throw new DeleteConstraintException("Book is currently borrowed and cannot be deleted");
         }

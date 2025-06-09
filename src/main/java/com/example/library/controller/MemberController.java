@@ -2,6 +2,7 @@ package com.example.library.controller;
 
 import com.example.library.dto.MemberDTO;
 import com.example.library.service.MemberService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -26,12 +27,12 @@ public class MemberController {
     }
 
     @PostMapping
-    public ResponseEntity<MemberDTO> createMember(@RequestBody MemberDTO memberDTO) {
+    public ResponseEntity<MemberDTO> createMember(@RequestBody @Valid MemberDTO memberDTO) {
         return ResponseEntity.ok(memberService.createMember(memberDTO));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<MemberDTO> updateMember(@PathVariable Long id, @RequestBody MemberDTO memberDTO) {
+    public ResponseEntity<MemberDTO> updateMember(@PathVariable Long id, @RequestBody @Valid MemberDTO memberDTO) {
         return ResponseEntity.ok(memberService.updateMember(id, memberDTO));
     }
 

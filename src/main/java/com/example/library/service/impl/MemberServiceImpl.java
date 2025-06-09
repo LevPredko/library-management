@@ -2,7 +2,9 @@ package com.example.library.service.impl;
 
 import com.example.library.dto.MemberDTO;
 import com.example.library.entity.Member;
+import com.example.library.exception.DeleteConstraintException;
 import com.example.library.exception.NotFoundException;
+import com.example.library.repository.BorrowRepository;
 import com.example.library.repository.MemberRepository;
 import com.example.library.service.MemberService;
 import com.example.library.validation.MemberDTOValidator;
@@ -18,6 +20,8 @@ public class MemberServiceImpl implements MemberService {
 
     private final MemberRepository memberRepository;
     private final MemberDTOValidator memberDTOValidator;
+    private final BorrowRepository borrowRepository;
+
     private MemberDTO toDTO(Member member) {
         MemberDTO dto = new MemberDTO();
         dto.setId(member.getId());
@@ -70,6 +74,12 @@ public class MemberServiceImpl implements MemberService {
     public void deleteMember(Long id) {
         Member member = memberRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Member with ID " + id + " not found"));
+
+        boolean hasActiveBorrows = borrowRepository.existsByMemberIdAndReturnDateIsNull(id);
+        if (hasActiveBorrows) {
+            throw new DeleteConstraintException("Cannot delete member with active borrowed books.");
+        }
         memberRepository.delete(member);
     }
+
 }
